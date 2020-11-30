@@ -1,0 +1,11 @@
+div {
+    margin-bottom: 20px;
+}
+
+div.error {
+    color: red;
+}
+
+canvas {
+    border: 1px solid black;
+}
