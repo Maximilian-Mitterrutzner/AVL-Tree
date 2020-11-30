@@ -3,7 +3,7 @@ let ctx;
 let mouseX = 0;
 let mouseY = 0;
 
-window.onload = function() {
+function initRenderer() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
 	
