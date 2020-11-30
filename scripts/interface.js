@@ -29,6 +29,8 @@ function onAdd() {
     }
     
     txt_key.value = "";
+    
+    draw();
 }
 
 function displayError(message) {

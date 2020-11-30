@@ -47,8 +47,9 @@ function rebalance() {
     
 }
 
-class Node {
+class Node extends Circle {
     constructor(key, value) {
+        super();
         this.key = key;
         this.value = value;
     }
@@ -63,15 +64,6 @@ class Node {
     
     static getHeightOfChild(child) {
         return child === undefined ? 0 : child.getHeight();
-    }
-    
-    draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "black";
-        ctx.fill();
-        ctx.stroke();
     }
 }
 
