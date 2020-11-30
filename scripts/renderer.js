@@ -15,6 +15,7 @@ function draw() {
 	ctx.fillRect(0, 0, canvas.height, canvas.width);
     
     let treeHeight = rootNode.getHeight();
+    console.log("TreeHeight: " + treeHeight);
     if(treeHeight == 0) {
         return;
     }
@@ -27,23 +28,24 @@ function draw() {
 
     //Calculate positions
     let leafCount = Math.pow(2, treeHeight - 1);
-    let radius = (canvas.width / (leafCount * 2)) / 2;
-    let diameter = radius * 2;
-    let heightDiff = (canvas.height - treeHeight * diameter) / treeHeight;
+    let diameter = canvas.width / (leafCount * 2);
+    let radius = diameter / 2;
+    let heightDiff = (canvas.height - diameter) / (treeHeight - 1);
+    console.log("(" + canvas.height + " - (" + treeHeight + " * " + radius + ")) / (" + treeHeight + " - 1)");
     console.log("HeightDiff: " + heightDiff + ". Radius: " + radius + ". Height: " + treeHeight);
     Circle.radius = radius;
     
-    let prevInset = (canvas.width / 2) - radius;
+    let prevInset = canvas.width / 2;
     let spaces = [[prevInset, radius]];
     
     for(let i = 1; i < treeHeight; i++) {
         let currentBreadth = Math.pow(2, i);
-        let space = (prevInset / 2) - radius;
+        let space = prevInset / 2;
         let height = spaces[i - 1][1] + heightDiff;
         
         spaces[i] = [space, height];
         
-        let neededSpace = space * (currentBreadth - 1) + currentBreadth * diameter;
+        let neededSpace = space * (currentBreadth - 1);
         prevInset = (canvas.width - neededSpace) / 2;
     }
     
