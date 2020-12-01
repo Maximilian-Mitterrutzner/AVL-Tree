@@ -2,6 +2,8 @@ let canvas;
 let ctx;
 let mouseX = 0;
 let mouseY = 0;
+let heightDiff;
+let spaces;
 
 function initRenderer() {
 	canvas = document.getElementById("canvas");
@@ -20,6 +22,7 @@ function draw() {
         return;
     }
     else if(treeHeight == 1) {
+        Circle.radius = canvas.height / 4;
         rootNode.x = canvas.width / 2;
         rootNode.y = canvas.height / 2;
         rootNode.draw();
@@ -30,49 +33,40 @@ function draw() {
     let leafCount = Math.pow(2, treeHeight - 1);
     let diameter = canvas.width / (leafCount * 2);
     let radius = diameter / 2;
-    let heightDiff = (canvas.height - diameter) / (treeHeight - 1);
-    console.log("(" + canvas.height + " - (" + treeHeight + " * " + radius + ")) / (" + treeHeight + " - 1)");
+    heightDiff = (canvas.height - 2 * diameter) / (treeHeight - 1);
     console.log("HeightDiff: " + heightDiff + ". Radius: " + radius + ". Height: " + treeHeight);
     Circle.radius = radius;
     
-    let prevInset = canvas.width / 2;
-    let spaces = [[prevInset, radius]];
-    
-    for(let i = 1; i < treeHeight; i++) {
-        let currentBreadth = Math.pow(2, i);
-        let space = prevInset / 2;
-        let height = spaces[i - 1][1] + heightDiff;
-        
-        spaces[i] = [space, height];
-        
-        let neededSpace = space * (currentBreadth - 1);
-        prevInset = (canvas.width - neededSpace) / 2;
+    spaces = [];
+    spaces[treeHeight - 1] = diameter;
+    for(let i = treeHeight - 2; i >= 0; i--) {
+        spaces[i] = spaces[i + 1] * 2;
+        spaces[i + 1];
     }
+    spaces[0] = [canvas.width / 2, diameter];
     
-    console.log(spaces);
-    
-    drawTree(spaces);
+    drawTree();
 }
 
-function drawTree(spaces) {
+function drawTree() {
     //Colors
     rootNode.x = spaces[0][0];
     rootNode.y = spaces[0][1];
-    drawSubTree(rootNode, spaces, 0);
+    drawSubTree(rootNode, 0);
     rootNode.draw();
 }
 
-function drawSubTree(node, spaces, curDepth) {
-    drawIfPresent(node, node.lChild, spaces, curDepth + 1, -1);
-    drawIfPresent(node, node.rChild, spaces, curDepth + 1, 1);
+function drawSubTree(node, curDepth) {
+    drawIfPresent(node, node.lChild, curDepth + 1, -1);
+    drawIfPresent(node, node.rChild, curDepth + 1, 1);
 }
 
-function drawIfPresent(parent, child, spaces, curDepth, leftRightDet) {
+function drawIfPresent(parent, child, curDepth, leftRightDet) {
     if(child !== undefined) {        
-        child.x = parent.x + (spaces[curDepth][0] + Circle.radius) * leftRightDet;
-        child.y = spaces[curDepth][1];
+        child.x = parent.x + spaces[curDepth] * leftRightDet;
+        child.y = parent.y + heightDiff;
         
-        drawSubTree(child, spaces, curDepth);
+        drawSubTree(child, curDepth);
         drawConnection(parent, child);
         child.draw();
     }
