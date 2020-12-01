@@ -8,16 +8,14 @@ let spaces;
 function initRenderer() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
+	ctx.fillStyle = "white";
+    ctx.strokeStyle = "black";
 }
 
 function draw() {
-    console.log(rootNode);
-    
-	ctx.fillStyle = "white";
 	ctx.fillRect(0, 0, canvas.height, canvas.width);
     
     let treeHeight = rootNode.getHeight();
-    console.log("TreeHeight: " + treeHeight);
     if(treeHeight == 0) {
         return;
     }
@@ -33,11 +31,10 @@ function draw() {
     let leafCount = Math.pow(2, treeHeight - 1);
     let diameter = canvas.width / (leafCount * 2);
     let radius = diameter / 2;
-    heightDiff = (canvas.height - 2 * diameter) / (treeHeight - 1);
-    console.log("HeightDiff: " + heightDiff + ". Radius: " + radius + ". Height: " + treeHeight);
     Circle.radius = radius;
-    
+    heightDiff = (canvas.height - 2 * diameter) / (treeHeight - 1);
     spaces = [];
+    
     spaces[treeHeight - 1] = diameter;
     for(let i = treeHeight - 2; i >= 0; i--) {
         spaces[i] = spaces[i + 1] * 2;
@@ -49,7 +46,6 @@ function draw() {
 }
 
 function drawTree() {
-    //Colors
     rootNode.x = spaces[0][0];
     rootNode.y = spaces[0][1];
     drawSubTree(rootNode, 0);
@@ -72,20 +68,6 @@ function drawIfPresent(parent, child, curDepth, leftRightDet) {
     }
 }
 
-class Circle {
-    static radius = 0;
-    
-    draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, Circle.radius, 0, Math.PI * 2, true);
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "black";
-        ctx.fill();
-        ctx.stroke();
-    }
-}
-
-
 function drawConnection(c1, c2) {
     if(dist(c1.x, c1.y, c2.x, c2.y) <= 2 * Circle.radius) {
         return;
@@ -94,7 +76,7 @@ function drawConnection(c1, c2) {
     ctx.beginPath();
     ctx.moveTo(c1.x, c1.y);
     ctx.lineTo(c2.x, c2.y);
-    ctx.strokeStyle = "black";
+    ctx.closePath();
     ctx.stroke();
 }
 
