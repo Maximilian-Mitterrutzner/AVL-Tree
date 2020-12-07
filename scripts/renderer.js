@@ -10,6 +10,7 @@ function initRenderer() {
 	ctx = canvas.getContext("2d");
 	ctx.fillStyle = "white";
     ctx.strokeStyle = "black";
+    ctx.textAlign = "center";
 }
 
 function draw() {
@@ -31,6 +32,7 @@ function draw() {
     let leafCount = Math.pow(2, treeHeight - 1);
     let diameter = canvas.width / (leafCount * 2);
     let radius = diameter / 2;
+    ctx.font = (radius / 2) + "px Arial";
     Circle.radius = radius;
     heightDiff = (canvas.height - 2 * diameter) / (treeHeight - 1);
     spaces = [];
@@ -38,7 +40,6 @@ function draw() {
     spaces[treeHeight - 1] = diameter;
     for(let i = treeHeight - 2; i >= 0; i--) {
         spaces[i] = spaces[i + 1] * 2;
-        spaces[i + 1];
     }
     spaces[0] = [canvas.width / 2, diameter];
     

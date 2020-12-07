@@ -7,6 +7,8 @@ class Circle {
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
+        
+        ctx.strokeText(this.key, this.x, this.y);
     }
 }
 
@@ -25,6 +27,19 @@ class Node extends Circle {
         return Math.abs(Node.getHeightOfChild(this.lChild) - Node.getHeightOfChild(this.rChild));
     }
     
+    hasChildren() {
+        return this.lChild !== undefined || this.rChild !== undefined;
+    }
+    
+    replaceChild(oldChild, newChild) {
+        if(this.lChild === oldChild) {
+            this.lChild = newChild;
+        }
+        else {
+            this.rChild = newChild;
+        }
+    }
+    
     static getHeightOfChild(child) {
         return child === undefined ? 0 : child.getHeight();
     }
@@ -36,6 +51,16 @@ class DuplicateError extends Error {
         
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, DuplicateError); //TODO check if necessary
+        }
+    }
+}
+
+class KeyNotFoundError extends Error {
+    constructor(...params) {
+        super(params);
+        
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, KeyNotFoundError); //TODO check if necessary
         }
     }
 }
