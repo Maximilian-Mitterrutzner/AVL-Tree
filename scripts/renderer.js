@@ -43,14 +43,9 @@ function draw() {
     for(let i = treeHeight - 2; i >= 0; i--) {
         spaces[i] = spaces[i + 1] * 2;
     }
-    spaces[0] = [canvas.width / 2, diameter];
     
-    drawTree();
-}
-
-function drawTree() {
-    rootNode.x = spaces[0][0];
-    rootNode.y = spaces[0][1];
+    rootNode.x = canvas.width / 2;
+    rootNode.y = diameter;
     drawSubTree(rootNode, 1);
     rootNode.draw();
 }

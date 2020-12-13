@@ -121,13 +121,12 @@ function overrideNode(oldNode, newNode) {
     
     parent.replaceChild(oldNode, newNode);
     
-    oldNode.childNodes.forEach(node => {
+    oldNode.childNodes.forEach((node, key) => {
         if(node !== undefined) {
             node.parent = newNode;
+            newNode.childNodes.set(key, node);
         }
     });
     
     newNode.parent = oldNode.parent;
-    newNode.childNodes.set(-1, oldNode.childNodes.get(-1));
-    newNode.childNodes.set(1, oldNode.childNodes.get(1));
 }
