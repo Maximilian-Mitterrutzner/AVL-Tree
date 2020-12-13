@@ -16,11 +16,13 @@ function initRenderer() {
 function draw() {
 	ctx.fillRect(0, 0, canvas.height, canvas.width);
     
-    let treeHeight = rootNode.getHeight();
-    if(treeHeight == 0) {
+    if(rootNode === undefined) {
         return;
     }
-    else if(treeHeight == 1) {
+    
+    let treeHeight = rootNode.getHeight();
+
+    if(treeHeight == 1) {
         Circle.radius = canvas.height / 4;
         rootNode.x = canvas.width / 2;
         rootNode.y = canvas.height / 2;

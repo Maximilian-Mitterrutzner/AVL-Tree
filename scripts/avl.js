@@ -28,11 +28,6 @@ function addNode(toAdd) {
 }
 
 function removeNode(key) {
-    if(rootNode.key === key) {
-        rootNode = undefined;
-        return;
-    }
-    
     if(!removeNodeRec(rootNode, key)) {
         throw new KeyNotFoundError("The tree does not contain this key!");
         return;
@@ -51,18 +46,26 @@ function removeNodeRec(currentNode, key) {
         return true;
     }
     
-    if(removeNodeRec(currentNode.childNodes.get(-1), key)) {
-        return true;
-    }
-    return removeNodeRec(currentNode.childNodes.get(1), key);
+    return removeNodeRec(currentNode.childNodes.get(-1), key) 
+        || removeNodeRec(currentNode.childNodes.get(1), key);
 }
 
 function processRemoval(toRemove) {
     if(toRemove.childNodes.get(-1) === undefined && toRemove.childNodes.get(1) === undefined) {
-        toRemove.parent.replaceChild(toRemove, undefined);
+        if(toRemove === rootNode) {
+            rootNode = undefined;
+        }
+        else {
+            toRemove.parent.replaceChild(toRemove, undefined);
+        }
     }
     else if (toRemove.childNodes.get(-1) === undefined || toRemove.childNodes.get(1) === undefined) {
-        removeHalfLeaf(toRemove);
+        if(toRemove === rootNode) {
+            rootNode = rootNode.childNodes.get(-1) === undefined ? rootNode.childNodes.get(1) : rootNode.childNodes.get(-1);
+        }
+        else {
+            removeHalfLeaf(toRemove);
+        }
     }
     else {
         let left = walkDirection(toRemove.childNodes.get(-1), 1);
@@ -76,7 +79,21 @@ function processRemoval(toRemove) {
         else {
             toExtract.parent.replaceChild(toExtract, undefined);
         }
-        overrideNode(toRemove, toExtract);
+        
+        if(toRemove === rootNode) {
+            rootNode.childNodes.forEach(node => {
+                if(node !== undefined) {
+                    node.parent = toExtract;
+                }
+            });
+            toExtract.childNodes.set(-1, rootNode.childNodes.get(-1));
+            toExtract.childNodes.set(1, rootNode.childNodes.get(1));
+            
+            rootNode = toExtract;
+        }
+        else {
+            overrideNode(toRemove, toExtract);
+        }
     }
 }
 
