@@ -49,24 +49,21 @@ function draw() {
 function drawTree() {
     rootNode.x = spaces[0][0];
     rootNode.y = spaces[0][1];
-    drawSubTree(rootNode, 0);
+    drawSubTree(rootNode, 1);
     rootNode.draw();
 }
 
 function drawSubTree(node, curDepth) {
-    drawIfPresent(node, node.lChild, curDepth + 1, -1);
-    drawIfPresent(node, node.rChild, curDepth + 1, 1);
-}
+    node.childNodes.forEach((child, index) => {
+        if(child !== undefined) {
+            child.x = node.x + spaces[curDepth] * index;
+            child.y = node.y + heightDiff;
 
-function drawIfPresent(parent, child, curDepth, leftRightDet) {
-    if(child !== undefined) {        
-        child.x = parent.x + spaces[curDepth] * leftRightDet;
-        child.y = parent.y + heightDiff;
-        
-        drawSubTree(child, curDepth);
-        drawConnection(parent, child);
-        child.draw();
-    }
+            drawSubTree(child, curDepth + 1);
+            drawConnection(node, child);
+            child.draw();
+        }
+    });
 }
 
 function drawConnection(c1, c2) {

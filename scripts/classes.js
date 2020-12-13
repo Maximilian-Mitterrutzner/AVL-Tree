@@ -17,26 +17,23 @@ class Node extends Circle {
         super();
         this.key = key;
         this.value = value;
+        this.childNodes = new Map();
     }
     
     getHeight() {
-        return 1 + Math.max(Node.getHeightOfChild(this.lChild), Node.getHeightOfChild(this.rChild));
-    }
-    
-    getBalance() {
-        return Math.abs(Node.getHeightOfChild(this.lChild) - Node.getHeightOfChild(this.rChild));
+        return 1 + Math.max(Node.getHeightOfChild(this.childNodes.get(-1)), Node.getHeightOfChild(this.childNodes.get(1)));
     }
     
     hasChildren() {
-        return this.lChild !== undefined || this.rChild !== undefined;
+        return this.childNodes.get(-1) !== undefined || this.childNodes.get(1) !== undefined;
     }
     
     replaceChild(oldChild, newChild) {
-        if(this.lChild === oldChild) {
-            this.lChild = newChild;
+        if(this.childNodes.get(-1) === oldChild) {
+            this.childNodes.set(-1, newChild);
         }
         else {
-            this.rChild = newChild;
+            this.childNodes.set(1, newChild);
         }
     }
     

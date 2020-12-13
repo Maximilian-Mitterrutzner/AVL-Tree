@@ -8,32 +8,23 @@ function addNode(toAdd) {
     
     let currentNode = rootNode;
     while(toAdd.parent === undefined) {
-        switch(toAdd.key.localeCompare(currentNode.key)) {
-            case 0:
-                throw new DuplicateError("The tree already contains this key");
-                return;
-            case -1:
-                if(currentNode.lChild === undefined) {
-                    currentNode.lChild = toAdd;
-                    toAdd.parent = currentNode;
-                }
-                else {
-                    currentNode = currentNode.lChild;
-                }
-                break;
-            case 1:
-                if(currentNode.rChild === undefined) {
-                    currentNode.rChild = toAdd;
-                    toAdd.parent = currentNode;
-                }
-                else {
-                    currentNode = currentNode.rChild;
-                }
-                break;
+        let result = toAdd.key.localeCompare(currentNode.key);
+        if(result == 0) {
+            throw new DuplicateError("The tree already contains this key");
+            return;
+        }
+
+        let node = currentNode.childNodes.get(result);
+        if(node === undefined) {
+            currentNode.childNodes.set(result, toAdd);
+            toAdd.parent = currentNode;
+        }
+        else {
+            currentNode = node;
         }
     }
     
-    //TODO rebalance if necessary
+    //TODO rebalance if necessary;
 }
 
 function removeNode(key) {
@@ -60,62 +51,50 @@ function removeNodeRec(currentNode, key) {
         return true;
     }
     
-    if(removeNodeRec(currentNode.lChild, key)) {
+    if(removeNodeRec(currentNode.childNodes.get(-1), key)) {
         return true;
     }
-    return removeNodeRec(currentNode.rChild, key);
+    return removeNodeRec(currentNode.childNodes.get(1), key);
 }
 
 function processRemoval(toRemove) {
-    if(toRemove.lChild === undefined && toRemove.rChild === undefined) {
+    if(toRemove.childNodes.get(-1) === undefined && toRemove.childNodes.get(1) === undefined) {
         toRemove.parent.replaceChild(toRemove, undefined);
     }
-    else if (toRemove.lChild === undefined || toRemove.rChild === undefined) {
+    else if (toRemove.childNodes.get(-1) === undefined || toRemove.childNodes.get(1) === undefined) {
         removeHalfLeaf(toRemove);
     }
     else {
-        let lHeight = 0;
-        let rHeight = 0;
-        let lNode = toRemove.lChild;
-        let rNode = toRemove.rChild;
+        let left = walkDirection(toRemove.childNodes.get(-1), 1);
+        let right = walkDirection(toRemove.childNodes.get(1), -1);
         
-        if(lNode !== undefined) {
-            while(lNode.rChild !== undefined) {
-                lNode = lNode.rChild;
-                lHeight++;
-            }
-        }
-        if(rNode !== undefined) {
-            while(rNode.lChild !== undefined) {
-                rNode = rNode.lChild;
-                rHeight++;
-            }
-        }
+        let toExtract = left[0] >= right[0] ? left[1] : right[1];
         
-        if(lHeight >= rHeight) {
-            if(lNode.hasChildren()) {
-                removeHalfLeaf(lNode);
-            }
-            else {
-                lNode.parent.replaceChild(lNode, undefined);
-            }
-            overrideNode(toRemove, lNode);
+        if(toExtract.hasChildren()) {
+            removeHalfLeaf(toExtract);
         }
         else {
-            if(rNode.hasChildren()) {
-                removeHalfLeaf(rNode);
-            }
-            else {
-                rNode.parent.replaceChild(rNode, undefined);
-            }
-            overrideNode(toRemove, rNode);
+            toExtract.parent.replaceChild(toExtract, undefined);
         }
+        overrideNode(toRemove, toExtract);
     }
 }
 
+function walkDirection(node, direction) {
+    if(node === undefined) {
+        return [0, node];
+    }
+    
+    let height = 0;
+    while(node.childNodes.get(direction) !== undefined) {
+        node = node.childNodes.get(direction);
+        height++;
+    }
+    return [height, node];
+}
+
 function removeHalfLeaf(toRemove) {
-    console.log(toRemove);
-    let child = toRemove.lChild === undefined ? toRemove.rChild : toRemove.lChild;
+    let child = toRemove.childNodes.get(-1) === undefined ? toRemove.childNodes.get(1) : toRemove.childNodes.get(-1);
     child.parent = toRemove.parent;
     toRemove.parent.replaceChild(toRemove, child);
 }
@@ -125,18 +104,13 @@ function overrideNode(oldNode, newNode) {
     
     parent.replaceChild(oldNode, newNode);
     
-    if(oldNode.lChild !== undefined) {
-        oldNode.lChild.parent = newNode;
-    }
-    if(oldNode.rChild !== undefined) {
-        oldNode.rChild.parent = newNode;
-    }
+    oldNode.childNodes.forEach(node => {
+        if(node !== undefined) {
+            node.parent = newNode;
+        }
+    });
     
     newNode.parent = oldNode.parent;
-    newNode.lChild = oldNode.lChild;
-    newNode.rChild = oldNode.rChild;
-}
-
-function rebalance() {
-    
+    newNode.childNodes.set(-1, oldNode.childNodes.get(-1));
+    newNode.childNodes.set(1, oldNode.childNodes.get(1));
 }
