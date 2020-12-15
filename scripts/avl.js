@@ -141,14 +141,20 @@ function rebalance(node) {
         
         if(Math.abs(lHeight - rHeight) > 1) {
             let direction = lHeight > rHeight ? -1 : 1;
+            let outerSubHeight = Node.getHeightOfChild(node.childNodes.get(direction).childNodes.get(direction));
+            let innerSubHeight = Node.getHeightOfChild(node.childNodes.get(direction).childNodes.get(-direction));
+            
+            if(innerSubHeight > outerSubHeight) {
+                performSimpleRotation(node.childNodes.get(direction), -direction);
+            }
             performSimpleRotation(node, direction);
         }
     }
 }
 
-function performSimpleRotation(node, direction) {
-    let newParent = node.childNodes.get(direction);
-    let child = newParent.childNodes.get(-direction);
+function performSimpleRotation(node, dir) {
+    let newParent = node.childNodes.get(dir);
+    let child = newParent.childNodes.get(-dir);
     
     if(node.parent === undefined) {
         rootNode = newParent;
@@ -156,10 +162,12 @@ function performSimpleRotation(node, direction) {
     else {
         node.parent.replaceChild(node, newParent);
     }
-    node.childNodes.set(direction, child);
-    if(node.childNodes.get(direction) !== undefined) {
-        node.childNodes.get(direction).parent = node;
+    newParent.parent = node.parent;
+    node.childNodes.set(dir, child);
+    if(child !== undefined) {
+        child.parent = node;
     }
     node.parent = newParent;
-    newParent.childNodes.set(-direction, node);
+
+    newParent.childNodes.set(-dir, node);
 }
