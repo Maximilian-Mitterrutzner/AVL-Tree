@@ -24,7 +24,7 @@ function addNode(toAdd) {
         }
     }
     
-    //TODO rebalance if necessary;
+    rebalance(rootNode);
 }
 
 function removeNode(key) {
@@ -33,7 +33,7 @@ function removeNode(key) {
         return;
     }
     
-    //TODO rebalance if necessary
+    rebalance(rootNode);
 }
 
 function removeNodeRec(currentNode, key) {
@@ -129,4 +129,37 @@ function overrideNode(oldNode, newNode) {
     });
     
     newNode.parent = oldNode.parent;
+}
+
+function rebalance(node) {
+    if(node !== undefined) {
+        rebalance(node.childNodes.get(-1));
+        rebalance(node.childNodes.get(1));
+        
+        let lHeight = Node.getHeightOfChild(node.childNodes.get(-1));
+        let rHeight = Node.getHeightOfChild(node.childNodes.get(1));
+        
+        if(Math.abs(lHeight - rHeight) > 1) {
+            let direction = lHeight > rHeight ? -1 : 1;
+            performSimpleRotation(node, direction);
+        }
+    }
+}
+
+function performSimpleRotation(node, direction) {
+    let newParent = node.childNodes.get(direction);
+    let child = newParent.childNodes.get(-direction);
+    
+    if(node.parent === undefined) {
+        rootNode = newParent;
+    }
+    else {
+        node.parent.replaceChild(node, newParent);
+    }
+    node.childNodes.set(direction, child);
+    if(node.childNodes.get(direction) !== undefined) {
+        node.childNodes.get(direction).parent = node;
+    }
+    node.parent = newParent;
+    newParent.childNodes.set(-direction, node);
 }
