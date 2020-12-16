@@ -25,7 +25,7 @@ function onAdd() {
     }
     
     try {
-        addNode(new Node(key, "test"));
+        addNode(new Node(key));
     }
     catch(e) {
         displayError(e.message);

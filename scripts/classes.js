@@ -13,10 +13,9 @@ class Circle {
 }
 
 class Node extends Circle {
-    constructor(key, value) {
+    constructor(key) {
         super();
         this.key = key;
-        this.value = value;
         this.childNodes = new Map();
     }
     
