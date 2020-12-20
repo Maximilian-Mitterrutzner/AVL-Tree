@@ -102,7 +102,7 @@ class AddChange {
     }
     
     toString() {
-        return "Add " + this.key;
+        return "Hinzufügen: " + this.key;
     }
 }
 
@@ -116,7 +116,7 @@ class RemoveChange {
     }
     
     toString() {
-        return "Remove " + this.key;
+        return "Löschen: " + this.key;
     }
 }
 
@@ -126,7 +126,7 @@ class RebalanceChange {
     }
     
     toString() {
-        return "Rebalance";
+        return "Balancieren";
     }
 }
 

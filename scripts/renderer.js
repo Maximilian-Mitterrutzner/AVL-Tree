@@ -32,7 +32,7 @@ function dist(x1, y1, x2, y2) {
 
 function draw() {
     ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.height, canvas.width);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "black";
     if(currentChange !== undefined) {
         ctx.textAlign = "left";
@@ -80,13 +80,13 @@ function setCoordinates() {
     }
 
     let leafCount = Math.pow(2, treeHeight - 1);
-    let diameter = canvas.width / (leafCount * 2);
+    let diameter = Math.min(canvas.height, canvas.width) / (leafCount * 2);
     let radius = diameter / 2;
     Circle.radius = radius;
     heightDiff = (canvas.height - 2 * diameter) / (treeHeight - 1);
     spaces = [];
     
-    spaces[treeHeight - 1] = diameter;
+    spaces[treeHeight - 1] = canvas.width / (leafCount * 2);
     for(let i = treeHeight - 2; i >= 0; i--) {
         spaces[i] = spaces[i + 1] * 2;
     }

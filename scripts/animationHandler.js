@@ -20,7 +20,12 @@ function update() {
             return;
         }
         
-        startNextAnimation();
+        try {
+            startNextAnimation();
+        }
+        catch(ex) {
+            alert(ex);
+        }
     }
 }
 
@@ -38,7 +43,12 @@ function pushAction(change) {
     animationQueue.push(change);
     if(animationDone) {
         animationDone = false;
-        startNextAnimation();
+        try {
+            startNextAnimation();
+        }
+        catch(ex) {
+            alert(ex);
+        }
     }
 }
 

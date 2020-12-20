@@ -18,10 +18,9 @@ window.onload = function() {
 
 function onAdd() {
     let key = txt_key.value;
-    div_error.innerHTML = "";
     
     if(isEmpty(key)) {
-        displayError("Der Key kann nicht leer sein");
+        alert("Der Key kann nicht leer sein");
         return;
     }
     
@@ -32,21 +31,15 @@ function onAdd() {
 
 function onRemove() {
     let key = txt_key.value;
-    div_error.innerHTML = "";
     
     if(isEmpty(key)) {
-        displayError("Der Key kann nicht leer sein");
+        alert("Der Key kann nicht leer sein");
         return;
     }
     
     pushAction(new RemoveChange(key));
     
     txt_key.value = "";
-}
-
-
-function displayError(message) {
-    div_error.innerHTML = "<p>" + message + "</p>"; 
 }
 
 function isEmpty(str) {

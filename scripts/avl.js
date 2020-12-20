@@ -10,7 +10,7 @@ function addNode(toAdd) {
     while(toAdd.parent === undefined) {
         let result = toAdd.key.localeCompare(currentNode.key);
         if(result == 0) {
-            throw new DuplicateError("The tree already contains this key");
+            throw new DuplicateError("Dieser Wert ist im Baum bereits vorhanden!");
             return;
         }
 
@@ -29,7 +29,7 @@ function addNode(toAdd) {
 
 function removeNode(key) {
     if(!removeNodeRec(rootNode, key)) {
-        throw new KeyNotFoundError("The tree does not contain this key!");
+        throw new KeyNotFoundError("Dieser Wert befindet sich nicht im Baum!");
         return;
     }
     
