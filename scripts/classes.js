@@ -1,14 +1,52 @@
 class Circle {
     static radius = 0;
-    
+
+    constructor() {
+        this.isDone = false;
+    }
+
+    shiftCoordinates() {
+        this.startX = this.endX;
+        this.startY = this.endY;
+    }
+
+    setEndCoordinates(endX, endY) { 
+        this.curX = this.startX;
+        this.curY = this.startY;
+        
+        this.endX = endX;
+        this.endY = endY;
+        
+        this.xDiff = (this.endX - this.startX) / 60;
+        this.yDiff = (this.endY - this.startY) / 60;
+        
+        this.isDone = false;
+    }
+
     draw() {
+        if(!this.isDone) {
+            let nowDone = true;
+            if(Math.abs(this.curX - this.endX) > Math.abs(this.xDiff)) {
+                this.curX += this.xDiff;
+                nowDone = false;
+            }
+            if(Math.abs(this.curY - this.endY) > Math.abs(this.yDiff)) {
+                this.curY += this.yDiff;
+                nowDone = false;
+            }
+            
+            if(nowDone) {
+                this.isDone = true;
+            }
+        }
+        
         ctx.beginPath();
-        ctx.arc(this.x, this.y, Circle.radius, 0, Math.PI * 2, true);
+        ctx.arc(this.curX, this.curY, Circle.radius, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
         
-        ctx.strokeText(this.key, this.x, this.y);
+        ctx.strokeText(this.key, this.curX, this.curY);
     }
 }
 
@@ -38,6 +76,42 @@ class Node extends Circle {
     
     static getHeightOfChild(child) {
         return child === undefined ? 0 : child.getHeight();
+    }
+}
+
+class AddChange {
+    constructor(key) {
+        this.key = key;
+    }
+    
+    performChange() {
+        let addedNode = new Node(this.key);
+        addNode(addedNode);
+
+        if(addedNode.parent === undefined) {
+            addedNode.startX = canvas.width / 2;
+            addedNode.startY = canvas.height / 2;
+        }
+        else {
+            addedNode.startX = addedNode.parent.startX;
+            addedNode.startY = addedNode.parent.startY;
+        }
+    }
+}
+
+class RemoveChange {
+    constructor(key) {
+        this.key = key;
+    }
+    
+    performChange() {
+        removeNode(this.key);
+    }
+}
+
+class RebalanceChange {
+    performChange() {
+        rebalance(rootNode);
     }
 }
 

@@ -5,6 +5,7 @@ let div_error;
 
 window.onload = function() {
     initRenderer();
+    initAnimationHandler();
     
     txt_key = document.getElementById("txt_key");
     btn_add = document.getElementById("btn_add");
@@ -24,16 +25,9 @@ function onAdd() {
         return;
     }
     
-    try {
-        addNode(new Node(key));
-    }
-    catch(e) {
-        displayError(e.message);
-    }
+    pushAction(new AddChange(key));
     
     txt_key.value = "";
-    
-    draw();
 }
 
 function onRemove() {
@@ -45,11 +39,9 @@ function onRemove() {
         return;
     }
     
-    removeNode(key);
+    pushAction(new RemoveChange(key));
     
     txt_key.value = "";
-    
-    draw();
 }
 
 

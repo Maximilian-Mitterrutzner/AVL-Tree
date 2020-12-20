@@ -24,7 +24,7 @@ function addNode(toAdd) {
         }
     }
     
-    rebalance(rootNode);
+    pushAction(new RebalanceChange());
 }
 
 function removeNode(key) {
@@ -33,7 +33,7 @@ function removeNode(key) {
         return;
     }
     
-    rebalance(rootNode);
+    pushAction(new RebalanceChange());
 }
 
 function removeNodeRec(currentNode, key) {
@@ -170,16 +170,4 @@ function performSimpleRotation(node, dir) {
     node.parent = newParent;
 
     newParent.childNodes.set(-dir, node);
-}
-
-function copyTree(node, parent) {
-    if(node === undefined) {
-        return undefined;
-    }
-    
-    let newNode = new Node(node.key);
-    newNode.parent = parent;
-    newNode.childNodes.set(-1, copyTree(node.childNodes.get(-1), newNode));
-    newNode.childNodes.set(1, copyTree(node.childNodes.get(1), newNode));
-    return newNode;
 }

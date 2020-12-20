@@ -13,9 +13,54 @@ function initRenderer() {
     ctx.textAlign = "center";
 }
 
+function drawConnection(c1, c2) {
+    if(dist(c1.curX, c1.curY, c2.curX, c2.curY) <= 2 * Circle.radius) {
+        return;
+    }
+    
+    ctx.beginPath();
+    ctx.moveTo(c1.curX, c1.curY);
+    ctx.lineTo(c2.curX, c2.curY);
+    ctx.closePath();
+    ctx.stroke();
+}
+
+function dist(x1, y1, x2, y2) {
+    let dx = x1 - x2;
+    let dy = y1 - y2;
+    return Math.sqrt((dx * dx) + (dy * dy));
+}
+
 function draw() {
 	ctx.fillRect(0, 0, canvas.height, canvas.width);
     
+    if(rootNode === undefined) {
+        return;
+    }
+    
+    drawConnections(rootNode);
+    drawNodes(rootNode);
+}
+
+function drawConnections(node) {
+    node.childNodes.forEach(child => {
+        if(child !== undefined) {
+            drawConnection(node, child)
+            drawConnections(child);
+        }
+    });
+}
+
+function drawNodes(node) {
+    node.draw();
+    node.childNodes.forEach(child => {
+        if(child !== undefined) {
+            drawNodes(child);
+        }
+    });
+}
+
+function setCoordinates() {
     if(rootNode === undefined) {
         return;
     }
@@ -24,13 +69,10 @@ function draw() {
 
     if(treeHeight == 1) {
         Circle.radius = canvas.height / 4;
-        rootNode.x = canvas.width / 2;
-        rootNode.y = canvas.height / 2;
-        rootNode.draw();
+        rootNode.setEndCoordinates(canvas.width / 2, canvas.height / 2);
         return;
     }
 
-    //Calculate positions
     let leafCount = Math.pow(2, treeHeight - 1);
     let diameter = canvas.width / (leafCount * 2);
     let radius = diameter / 2;
@@ -44,39 +86,25 @@ function draw() {
         spaces[i] = spaces[i + 1] * 2;
     }
     
-    rootNode.x = canvas.width / 2;
-    rootNode.y = diameter;
-    drawSubTree(rootNode, 1);
-    rootNode.draw();
+    rootNode.setEndCoordinates(canvas.width / 2, diameter);
+    
+    setCoordinatesRec(rootNode, 1);
 }
 
-function drawSubTree(node, curDepth) {
+function setCoordinatesRec(node, curDepth) {
     node.childNodes.forEach((child, index) => {
         if(child !== undefined) {
-            child.x = node.x + spaces[curDepth] * index;
-            child.y = node.y + heightDiff;
-
-            drawSubTree(child, curDepth + 1);
-            drawConnection(node, child);
-            child.draw();
+            let endX = node.endX + spaces[curDepth] * index;
+            let endY = node.endY + heightDiff;
+            child.setEndCoordinates(endX, endY);
+            setCoordinatesRec(child, curDepth + 1);
         }
     });
 }
 
-function drawConnection(c1, c2) {
-    if(dist(c1.x, c1.y, c2.x, c2.y) <= 2 * Circle.radius) {
-        return;
+function isDone(node) {
+    if(node === undefined) {
+        return true;
     }
-    
-    ctx.beginPath();
-    ctx.moveTo(c1.x, c1.y);
-    ctx.lineTo(c2.x, c2.y);
-    ctx.closePath();
-    ctx.stroke();
-}
-
-function dist(x1, y1, x2, y2) {
-    let dx = x1 - x2;
-    let dy = y1 - y2;
-    return Math.sqrt((dx * dx) + (dy * dy));
+    return node.isDone && isDone(node.childNodes.get(-1)) && isDone(node.childNodes.get(1));
 }
