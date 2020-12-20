@@ -40,13 +40,16 @@ class Circle {
             }
         }
         
+        ctx.fillStyle = "white";
         ctx.beginPath();
         ctx.arc(this.curX, this.curY, Circle.radius, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
         
-        ctx.strokeText(this.key, this.curX, this.curY);
+        ctx.textAlign = "center";
+        ctx.fillStyle = "black";
+        ctx.fillText(this.key, this.curX, this.curY);
     }
 }
 
@@ -97,6 +100,10 @@ class AddChange {
             addedNode.startY = addedNode.parent.startY;
         }
     }
+    
+    toString() {
+        return "Add " + this.key;
+    }
 }
 
 class RemoveChange {
@@ -107,11 +114,19 @@ class RemoveChange {
     performChange() {
         removeNode(this.key);
     }
+    
+    toString() {
+        return "Remove " + this.key;
+    }
 }
 
 class RebalanceChange {
     performChange() {
         rebalance(rootNode);
+    }
+    
+    toString() {
+        return "Rebalance";
     }
 }
 

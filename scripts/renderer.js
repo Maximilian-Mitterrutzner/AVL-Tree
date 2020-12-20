@@ -8,9 +8,8 @@ let spaces;
 function initRenderer() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
-	ctx.fillStyle = "white";
     ctx.strokeStyle = "black";
-    ctx.textAlign = "center";
+    ctx.font = "20px Arial";
 }
 
 function drawConnection(c1, c2) {
@@ -32,7 +31,14 @@ function dist(x1, y1, x2, y2) {
 }
 
 function draw() {
-	ctx.fillRect(0, 0, canvas.height, canvas.width);
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.height, canvas.width);
+    ctx.fillStyle = "black";
+    if(currentChange !== undefined) {
+        ctx.textAlign = "left";
+        ctx.fillText(currentChange.toString(), 20, 40);
+    }
+    ctx.fillStyle = "white";
     
     if(rootNode === undefined) {
         return;
@@ -76,7 +82,6 @@ function setCoordinates() {
     let leafCount = Math.pow(2, treeHeight - 1);
     let diameter = canvas.width / (leafCount * 2);
     let radius = diameter / 2;
-    ctx.font = (radius / 2) + "px Arial";
     Circle.radius = radius;
     heightDiff = (canvas.height - 2 * diameter) / (treeHeight - 1);
     spaces = [];

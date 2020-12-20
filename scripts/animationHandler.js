@@ -1,5 +1,6 @@
 let animationQueue = [];
 let animationDone = true;
+let currentChange;
 
 function initAnimationHandler() {
     setInterval(update, 1000 / 60);
@@ -13,6 +14,7 @@ function update() {
     }
     
     if(isDone(rootNode)) {
+        currentChange = undefined;
         if(animationQueue.length === 0) {
             animationDone = true;
             return;
@@ -23,12 +25,11 @@ function update() {
 }
 
 function startNextAnimation() {
-    console.log("in startNext");
-    let change = animationQueue.shift();
+    currentChange = animationQueue.shift();
     
     shiftCoordinates(rootNode);
     
-    change.performChange();
+    currentChange.performChange();
     
     setCoordinates();
 }
