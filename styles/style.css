@@ -35,3 +35,14 @@ input {
     padding: 5px;
     margin: 5px;
 }
+
+div.text {
+    font-weight: bold;
+    text-align: left;
+    margin: auto;
+    font-size: 20px;
+    color: #071e5c;
+    width: 1420px;
+    margin-top: 50px;
+    line-height: 40px;
+}

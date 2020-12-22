@@ -49,7 +49,7 @@ class Circle {
         
         ctx.textAlign = "center";
         ctx.fillStyle = "black";
-        ctx.fillText(this.key, this.curX, this.curY);
+        ctx.fillText(this.key, this.curX, this.curY, Circle.radius * 2 - 10);
     }
 }
 

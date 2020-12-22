@@ -29,12 +29,28 @@
         <div>
             <h2>Info</h2>
         </div>
+        <iframe width="1422" height="800" src="https://www.youtube-nocookie.com/embed/l7EUDWanEdc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         <div class="text">
-            <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et saepe, deserunt quod tempore consequatur sequi quos accusantium, incidunt id delectus asperiores pariatur mollitia veritatis. Quisquam sunt nihil repellendus, amet consectetur!</div>
-            <div>Accusamus non porro odit odio, maiores maxime architecto eum dolore perspiciatis illum modi enim omnis, est error. Mollitia omnis doloremque, enim quibusdam reiciendis quam dolor sint. Nulla quae adipisci ipsum!</div>
-            <div>Tempora ducimus, autem tenetur eaque hic assumenda omnis illum et vel quae sequi molestias voluptatibus magni doloribus, repudiandae cumque nam dicta enim unde. Natus, debitis, culpa. Aut eos, laboriosam est.</div>
-            <div>Impedit veritatis sequi, explicabo soluta officia est quos, quasi assumenda illo nesciunt eum animi deleniti, numquam cupiditate! Harum beatae reiciendis impedit molestias ratione et quod inventore consectetur consequatur incidunt! Nesciunt.</div>
-            <div>Blanditiis similique suscipit quidem dolor nostrum, harum eum laudantium. Odio fugiat, placeat accusamus, sit atque quaerat iure totam delectus maxime facere labore omnis sapiente architecto dignissimos quas quo maiores est.</div>
+            <div>
+                In der Informatik muss man oft eine Menge von Informationen speichern und auf diese dann auch zugreifen. Eine der einfachsten Datenstrukturen, die man dafür verwenden kann, sind Listen (bzw. "Arrays", wie sie im Englischen heißen). Doch oft geht es nicht nur darum, die Informationen zu speichern und auszulesen, dies muss auch noch in möglichst kurzer Zeit geschehen.
+            </div>
+            <div>
+                Ein Beispiel: Du bist Türsteher bei einer exklusiven Party und musst kontrollieren, ob jeder Gast, der hinein möchte, auch hineindarf. Dafür hast du eine Gästeliste. Wenn nur 20 Personen auf dieser Liste stehen, ist es kein Problem, wenn du jedes Mal die gesamte Liste durchsuchen musst, um herausfinden, ob jemand auf der Liste steht oder nicht. Wenn jetzt aber 200 oder 2.000 Personen auf dieser Liste stehen, ist der Abend schon vorbei, bevor du für jeden Gast kontrolliert hast, ob er auf der Liste steht.</div>
+            <div>
+                Eine andere Lösung muss her. Zum Beispiel eine nach dem Namen sortierte Liste. Wenn du nun eine solche Liste besitzt, bist du schon sehr viel schneller beim Kontrollieren der Gäste. Dies liegt daran, dass du in der Mitte der Liste anfangen kannst: Zuerst vergleichst du den Namen in der Mitte der Liste mit dem genannten Namen, und wenn dieser davor liegt, kannst du die gesamte zweite Hälfte der Liste mit nur einem Vergleich ausschließen (und umgekehrt). Hier endet die Magie aber noch nicht: Du kannst nun den ersten Teil der Liste nehmen, und auch hier wieder in der Mitte anfangen. Hier kannst du ein weiteres Viertel der Liste ausschließen. Dies kann nun so lange weitergehen, bis du den richtigen Namen gefunden hast. Aber nur Mal zum Vergleich: Mit dieser Methode kann man nach nur zwei Vergleichen ganze drei Viertel der Liste ausschließen, mit einer ungeordneten Liste gerade einmal zwei Namen!
+            </div>
+            <div>
+                Diese geordnete Liste hat also klare Vorteile gegenüber einer ungeordneten Liste. Warum also überhaupt jemals eine ungeordnete Liste verwenden? Nun, zum einen muss die Liste zuerst natürlich sortiert werden, was auch einiges an Zeit beansprucht, sodass es bei sehr kleinen Listen weniger effektiv ist als bei solchen mit tausenden von Elementen. Zum anderen sind solche geordnete Listen im Vergleich sehr viel langsamer beim Einfügen von neuen Elementen: Während bei einer ungeordneten Liste ein neues Element einfach am Ende angehängt werden kann, muss bei einer geordneten Liste zuerst der entsprechende Einfügepunkt in der Liste gefunden werden (die Liste soll ja danach immer noch sortiert sein!), dann muss das Element eingefügt, und alle nachfolgenden Elemente weitergeschoben werden. Somit benötigt die geordnete Liste mehr Zeit wie als ungeordnete Liste.
+            </div>
+            <div>
+                Während sich das Problem der anfänglichen Sortierung nur schwer lösen lässt, gibt es für das Problem der schnelleren Einfügung durchaus eine Lösung, und diese nennt sich: Bäume! Nein, im Ernst. Bäume gibt es nicht nur im Wald, sondern auch in der Informatik. Die meistverwendete Art von Bäumen nennt man binäre Bäume, bei denen jeder Knoten nur maximal zwei Kindknoten besitzt. Wenn wir also nun eine sortierte Liste nehmen und mit dieser einen Baum aufbauen, hat dieser die Eigenschaft, dass das Suchen von Elementen gleich schnell ist wie bei der Liste, das Einfügen von neuen Einträgen und das Löschen von alten ist aber beträchtlich schneller, da nicht alle nachfolgenden Elemente verschoben werden müssen. Solche Bäume sind aber nicht allmächtig, sie haben auch so ihre Tücken: Wenn ein anfangs ausgewogen aufgebauter Baum oft verändert wird, kann es sein, dass er irgendwann komplett unausgewogen ist, bis er einer normalen Liste gleicht.
+            </div>
+            <div>
+                Das ist sehr schlecht, da nun nicht nur das Suchen, sondern auch das Einfügen sowie Löschen gleich effizient sind wie bei einer unsortierten Liste, sprich sehr sehr langsam! Dieser Fall ist zwar selten, aber auch bei weniger stark einseitig balancierten Bäumen ist der Effekt durchaus bemerkbar und kann ihre Effizienz stark einschränken. Und genau hier setzen AVL-Bäume an: Mit ihnen wird nach jedem Einfügen bzw. Löschen überprüft, ob der Baum noch ausgewogen ist, und wenn nicht, wird er angepasst.
+            </div>
+            <div>
+                Der AVL-Baum ist übrigens benannt nach den sowjetischen Mathematikern Georgi Maximowitsch Adelson-Velski und Jewgeni Michailowitsch Landis, die die Datenstruktur im Jahr 1962 vorstellten. Damit ist der AVL-Baum die älteste Datenstruktur für balancierte Bäume.
+            </div>
         </div>
     </div>
 </body>
